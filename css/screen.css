@@ -71,6 +71,12 @@
     --global-input-focus-borderColor: var(--global-color-alpha);
     --global-input-focus-boxShadowColor: var(--global-color-alpha-x-transparent);
     --global-input-focus-boxShadow: 0 0 0 3px var(--global-input-focus-boxShadowColor);
+
+    --global-password-toggle-v-gutter: calc(var(--global-baseline) * 2.25); 
+    --global-password-toggle-h-gutter: calc(var(--global-baseline) * 1.75);
+
+    --global-color-error: #FF3333;
+    --global-input-error-borderColor: #FF3333;
 }
 
 /*------------------------------------*\
@@ -611,6 +617,15 @@ input::placeholder {
     align-items: center;
 }
 
+.has-error {
+    --label-color: var(--global-color-error);
+    --input-borderColor: var(--global-input-error-borderColor);
+    
+    --error-message-display: block;
+
+    /* --label-error-shadow: 0 0 0 3px var(--label-color); */
+}
+
 /*
     Component: Input
     ---
@@ -622,7 +637,7 @@ input::placeholder {
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    border: 1px solid var(--global-input-borderColor);
+    border: var(--global-borderWidth) solid var(--input-borderColor, var(--global-input-borderColor));
     border-radius: var(--global-borderRadius);
     background-color: var(--global-input-backgroundColor);
     color: var(--global-input-color);
@@ -635,12 +650,12 @@ input::placeholder {
 }
 
 .c-input:hover {
-    border-color: var(--global-input-hover-borderColor);
+    border-color: var(--label-color, --global-input-hover-borderColor);
 }
 
 .c-input:focus,
 .c-input:active {
-    border-color: var(--global-input-focus-borderColor);
+    border-color: var(--label-color, --global-input-focus-borderColor);
     box-shadow: var(--global-input-focus-boxShadow);
 }
 
@@ -666,12 +681,17 @@ more padding on the right to avoid overlap
 */
 
 .c-label {
-    --label-color: var(--global-color-neutral-xx-dark);
     margin-bottom: 0;
     padding-bottom: var(--global-whitespace-sm);
     font-size: 14px;
     line-height: 16px;
-    color: var(--label-color);
+    color: var(--label-color, var(--global-color-neutral-xx-dark));
+}
+
+.c-label__error-message {
+    font-weight: 600;
+    float: right;
+    display: var(--error-message-display, none);
 }
 
 .c-label--option {
@@ -935,7 +955,40 @@ more padding on the right to avoid overlap
     ---
     Password toggle custom checkbox
 */
+.c-password-toggle-container {
+    position: relative;
+    display: block;
+}
 
+.c-password-toggle {
+    position: absolute;
+    height: var(--global-whitespace-md);
+    width: var(--global-whitespace-md);
+    display: block;
+    right: var(--global-password-toggle-h-gutter);
+    top: var(--global-password-toggle-v-gutter);
+    bottom: var(--global-password-toggle-v-gutter);
+}
+
+.c-password-toggle__symbol {
+    fill: var(--global-color-neutral-x-light);
+}
+
+.c-password-toggle__symbol--hide {
+    display: none;
+}
+
+.c-password-toggle__symbol--show {
+    display: block;
+}
+
+.c-password-toggle__checkbox:checked + .c-password-toggle__label .c-password-toggle__symbol--hide {
+    display: block;
+}
+
+.c-password-toggle__checkbox:checked + .c-password-toggle__label .c-password-toggle__symbol--show {
+    display: none;
+}
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
